@@ -23,7 +23,9 @@ module Ronin
 
   def each_project
     PROJECTS.each do |name|
-      inside(name) { yield name }
+      if File.directory?(name)
+        inside(name) { yield name }
+      end
     end
   end
 
