@@ -12,7 +12,6 @@ module Ronin
     ronin-php
     ronin-metasploit
     ronin-wiki
-    ronin-team
   ]
 
   def self.included(base)
