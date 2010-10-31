@@ -3,14 +3,15 @@ module Ronin
     ronin-support
     ronin
     ronin-gen
-    ronin-exploits
-    ronin-web
     ronin-asm
+    ronin-web
+    ronin-metasploit
+    ronin-exploits
+    ronin-fuzz
     ronin-scanners
     ronin-dorks
     ronin-sql
     ronin-php
-    ronin-metasploit
     ronin-wiki
   ]
 
