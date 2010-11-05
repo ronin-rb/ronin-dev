@@ -1,6 +1,21 @@
 # Ronin Dev
 
 Ronin Dev allows a developer to easily clone and setup Ronin repositories.
+Ronin Dev supports the following repositories:
+
+* [ronin-support](http://github.com/ronin-ruby/ronin-support)
+* [ronin](http://github.com/ronin-ruby/ronin)
+* [ronin-gen](http://github.com/ronin-ruby/ronin-gen)
+* [ronin-asm](http://github.com/ronin-ruby/ronin-asm)
+* [ronin-web](http://github.com/ronin-ruby/ronin-web)
+* [ronin-metasploit](http://github.com/ronin-ruby/ronin-metasploit)
+* [ronin-exploits](http://github.com/ronin-ruby/ronin-exploits)
+* [ronin-fuzz](http://github.com/ronin-ruby/ronin-fuzz)
+* [ronin-scanners](http://github.com/ronin-ruby/ronin-scanners)
+* [ronin-dorks](http://github.com/ronin-ruby/ronin-dorks)
+* [ronin-sql](http://github.com/ronin-ruby/ronin-sql)
+* [ronin-php](http://github.com/ronin-ruby/ronin-php)
+* [ronin-wiki](http://github.com/ronin-ruby/ronin-wiki)
 
 ## Requirements
 
