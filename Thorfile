@@ -173,4 +173,13 @@ class Bundle < Thor
     run_in_all('bundle','update',*deps)
   end
 
+  desc 'show GEM', 'Shows the bundled gems'
+  def show(gem)
+    each_project do |name|
+      path = `bundle show #{gem}`
+
+      puts "#{name}: #{File.basename(path)}"
+    end
+  end
+
 end
