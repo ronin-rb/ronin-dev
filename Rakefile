@@ -5,9 +5,6 @@ PROJECTS = %w[
   ronin-web
   ronin-exploits
   ronin-scanners
-  ronin-dorks
-  ronin-sql
-  ronin-php
 ]
 
 def uri(name)
