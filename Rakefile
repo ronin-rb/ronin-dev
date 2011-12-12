@@ -54,14 +54,18 @@ namespace :git do
   task :mirror, :repo do |t,args|
     args.with_defaults(:repo => PROJECTS)
 
-    enter_projects(args.repos) do |name|
+    enter_projects(*args.repos) do |name|
       system 'git', 'push', 'mirror', 'master', '--tags'
     end
   end
 
   desc 'Pulls recent commits from the fork'
-  task :pull do
-    run_in_all 'git', 'pull', 'origin', 'master'
+  task :pull, :repos do |t,args|
+    args.with_defaults(:repos => PROJECTS)
+
+    enter_projects(*args.repos) do |name|
+      system 'git', 'pull', 'origin', 'master'
+    end
   end
 
   desc 'Checks the status of the repositories'
@@ -104,14 +108,18 @@ namespace :bundle do
   task :install, :repo do |t,args|
     args.with_defaults(:repo => PROJECTS)
 
-    enter_projects(args.repo) do |name|
+    enter_projects(*args.repo) do |name|
       system 'bundle', 'install'
     end
   end
 
   desc 'Upgrades a bundled dependency'
   task :update, :gem do |t,args|
-    run_in_all 'bundle', 'update', args.gem
+    args.with_defaults(:repo => PROJECTS)
+
+    enter_projects(*args.repo) do |name|
+      system 'bundle', 'update', args.gem
+    end
   end
 end
 
