@@ -11,12 +11,8 @@ def uri(name)
   "http://github.com/ronin-ruby/#{name}.git"
 end
 
-def each_project(name=nil)
-  names = if name
-            [name]
-          else
-            PROJECTS
-          end
+def each_project(*names)
+  names = PROJECTS if names.empty?
 
   names.each do |name|
     if File.directory?(name)
@@ -25,8 +21,8 @@ def each_project(name=nil)
   end
 end
 
-def enter_projects(name=nil)
-  each_project(name) do |project|
+def enter_projects(*names)
+  each_project(*names) do |project|
     puts ">>> Entering #{project} ..."
 
     yield name
