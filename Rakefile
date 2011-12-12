@@ -25,7 +25,7 @@ def enter_projects(*names)
   each_project(*names) do |project|
     puts ">>> Entering #{project} ..."
 
-    yield name
+    yield project
 
     puts ">>> Leaving #{project}."
   end
