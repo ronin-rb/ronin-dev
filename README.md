@@ -9,9 +9,6 @@ Ronin Dev supports the following repositories:
 * [ronin-web](http://github.com/ronin-ruby/ronin-web)
 * [ronin-exploits](http://github.com/ronin-ruby/ronin-exploits)
 * [ronin-scanners](http://github.com/ronin-ruby/ronin-scanners)
-* [ronin-dorks](http://github.com/ronin-ruby/ronin-dorks)
-* [ronin-sql](http://github.com/ronin-ruby/ronin-sql)
-* [ronin-php](http://github.com/ronin-ruby/ronin-php)
 
 ## Requirements
 
