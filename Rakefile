@@ -52,9 +52,7 @@ namespace :git do
 
   desc 'Pulls recent commits from the fork'
   task :mirror, :repo do |t,args|
-    args.with_defaults(:repo => PROJECTS)
-
-    enter_projects(*args.repos) do |name|
+    enter_projects(*args.repo) do |name|
       system 'git', 'push', 'mirror', 'master', '--tags'
     end
   end
@@ -114,11 +112,11 @@ namespace :bundle do
   end
 
   desc 'Upgrades a bundled dependency'
-  task :update, :gem do |t,args|
+  task :update, :repo do |t,args|
     args.with_defaults(:repo => PROJECTS)
 
     enter_projects(*args.repo) do |name|
-      system 'bundle', 'update', args.gem
+      system 'bundle', 'update', args.repo
     end
   end
 end
