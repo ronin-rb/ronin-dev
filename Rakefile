@@ -38,7 +38,7 @@ module Projects
       Project.clone(name)
     else
       NAMES.each do |name|
-        puts "[#{name}] Cloning ..."
+        status name, "Cloning ..."
         Project.clone(name)
       end
     end
@@ -69,8 +69,18 @@ module Projects
 
   def self.run(command,*arguments)
     each do |project|
-      puts "[#{project.name}] #{command} #{arguments.join(' ')}"
+      status project.name, "#{command} #{arguments.join(' ')}"
       project.run(command,*arguments)
+    end
+  end
+
+  protected
+
+  def self.status(name,message)
+    if $stdout.tty?
+      puts "\e[32m[#{name}]\e[0m #{message}"
+    else
+      puts "[#{name}] #{message}"
     end
   end
 end
