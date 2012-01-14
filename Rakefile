@@ -102,8 +102,8 @@ namespace :git do
   end
 
   desc 'Checks the status of the repositories'
-  task :status do
-    Projects.run('git', 'status')
+  task :status, :repo do |t,args|
+    Projects[args.repo].run('git', 'status')
   end
 
   desc 'Commit count'
