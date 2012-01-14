@@ -1,85 +1,110 @@
-PROJECTS = %w[
-  ronin-support
-  ronin
-  ronin-gen
-  ronin-web
-  ronin-exploits
-  ronin-scanners
-]
+require 'fileutils'
 
-def uri(name)
-  "http://github.com/ronin-ruby/#{name}.git"
-end
+module Projects
+  NAMES = %w[
+    ronin-support
+    ronin
+    ronin-gen
+    ronin-web
+    ronin-exploits
+    ronin-scanners
+  ]
 
-def each_project(*names)
-  names = PROJECTS if names.empty?
+  class Project
 
-  names.each do |name|
-    if File.directory?(name)
-      Dir.chdir(name) { yield name }
+    include FileUtils
+
+    attr_reader :name
+
+    def initialize(name)
+      @name = name
+    end
+
+    def self.clone(name)
+      system('git','clone',"http://github.com/ronin-ruby/#{name}.git")
+      return new(name)
+    end
+
+    def chdir(&block); Dir.chdir(@name,&block); end
+
+    def run(command,*arguments)
+      chdir { system(command,*arguments) }
+    end
+
+  end
+
+  def self.clone(name=nil)
+    if (name && name != '*')
+      Project.clone(name)
+    else
+      NAMES.each do |name|
+        puts "[#{name}] Cloning ..."
+        Project.clone(name)
+      end
     end
   end
-end
 
-def enter_projects(*names)
-  each_project(*names) do |project|
-    puts ">>> Entering #{project} ..."
+  def self.[](name)
+    if (name && name != '*')
+      fail("unknown project: #{name.dump}")        unless NAMES.include?(name)
+      fail("project does not exist: #{name.dump}") unless File.directory?(name)
 
-    yield project
-
-    puts ">>> Leaving #{project}."
+      Project.new(name)
+    else
+      self
+    end
   end
-end
 
-def run_in_all(command,*arguments)
-  enter_projects { |name| system(command,*arguments) }
+  def self.each
+    NAMES.each do |name|
+      yield(Project.new(name)) if File.directory?(name)
+    end
+  end
+
+  def self.chdir
+    each do |project|
+      project.chdir { yield project }
+    end
+  end
+
+  def self.run(command,*arguments)
+    each do |project|
+      puts "[#{project.name}] #{command} #{arguments.join(' ')}"
+      project.run(command,*arguments)
+    end
+  end
 end
 
 namespace :git do
   desc 'Clones ronin repositories'
   task :clone, :repo do |t,args|
-    repos = if args.repo
-              [args.repo]
-            else
-              PROJECTS
-            end
-
-    repos.each do |name| 
-      puts "Cloning #{name} ..."
-      system 'git', 'clone', uri(name)
-    end
+    Projects.clone(args.repo)
   end
 
   desc 'Pulls recent commits from the fork'
   task :mirror, :repo do |t,args|
-    enter_projects(*args.repo) do |name|
-      system 'git', 'push', 'mirror', 'master', '--tags'
-    end
+    Projects[args.repo].run('git', 'push', 'mirror', 'master', '--tags')
   end
 
   desc 'Pulls recent commits from the fork'
-  task :pull, :repos do |t,args|
-    args.with_defaults(:repos => PROJECTS)
-
-    enter_projects(*args.repos) do |name|
-      system 'git', 'pull', 'origin', 'master'
-    end
+  task :pull, :repo do |t,args|
+    Projects[args.repo].run('git', 'pull', 'origin', 'master')
   end
 
   desc 'Checks the status of the repositories'
   task :status do
-    run_in_all 'git', 'status'
+    Projects.run('git', 'status')
   end
 
   desc 'Commit count'
   task :count do
     total = 0
 
-    each_project do |name|
+    Projects.chdir do |project|
       count = `git rev-list --all | wc -l`.to_i
       total += count
 
-      puts "#{name}: #{count}"
+      puts "#{project.name}: #{count}"
     end
 
     puts "Total: #{total}"
@@ -87,15 +112,12 @@ namespace :git do
 
   desc 'Checks the health of the repositories'
   task :fsck do
-    enter_projects do |name|
-      system 'git', 'fsck'
-      system 'git', 'gc'
-    end
+    Projects.run "git fsck && git gc"
   end
 
   desc 'Greps the repositories'
   task :grep, :pattern do |t,args|
-    run_in_all 'git', 'grep', args.pattern
+    Projects.run 'git', 'grep', args.pattern
   end
 end
 
@@ -104,20 +126,12 @@ task :git => ['git:pull']
 namespace :bundle do
   desc 'Bundles each project'
   task :install, :repo do |t,args|
-    args.with_defaults(:repo => PROJECTS)
-
-    enter_projects(*args.repo) do |name|
-      system 'bundle', 'install'
-    end
+    Projects[args.repo].run('bundle', 'install')
   end
 
   desc 'Upgrades a bundled dependency'
-  task :update, :repo do |t,args|
-    args.with_defaults(:repo => PROJECTS)
-
-    enter_projects(*args.repo) do |name|
-      system 'bundle', 'update', args.repo
-    end
+  task :update, :repo, :gem do |t,args|
+    Projects[args.repo].run('bundle', 'update', args.gem)
   end
 end
 
