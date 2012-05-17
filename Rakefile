@@ -139,6 +139,11 @@ namespace :bundle do
     Projects[args.repo].run('bundle', 'install')
   end
 
+  desc 'Bundles each project into vendor/'
+  task :vendor, :repo do |t,args|
+    Projects[args.repo].run('bundle', 'install','--deployment')
+  end
+
   namespace :update do
     desc "Updates a bundled repository accross all projects"
     task :local, :repo do |t,args|
