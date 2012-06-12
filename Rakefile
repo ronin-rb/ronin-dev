@@ -21,15 +21,32 @@ module Projects
     end
 
     def self.clone(name)
-      system('git','clone',"http://github.com/ronin-ruby/#{name}.git")
+      uri = "http://github.com/ronin-ruby/#{name}.git"
+
+      status name, "git clone #{uri} ..."
+      system('git','clone',uri)
+
       return new(name)
     end
 
     def chdir(&block); Dir.chdir(@name,&block); end
 
     def run(command,*arguments)
+      status "#{command} #{arguments.join(' ')}"
       chdir { system(command,*arguments) }
     end
+
+    protected
+
+    def self.status(name,message)
+      if $stdout.tty?
+        puts "\e[32m[#{name}]\e[0m #{message}"
+      else
+        puts "[#{name}] #{message}"
+      end
+    end
+
+    def status(message); self.class.status(@name,message); end
 
   end
 
@@ -38,7 +55,6 @@ module Projects
       Project.clone(name)
     else
       NAMES.each do |name|
-        status name, "Cloning ..."
         Project.clone(name)
       end
     end
@@ -69,18 +85,7 @@ module Projects
 
   def self.run(command,*arguments)
     each do |project|
-      status project.name, "#{command} #{arguments.join(' ')}"
       project.run(command,*arguments)
-    end
-  end
-
-  protected
-
-  def self.status(name,message)
-    if $stdout.tty?
-      puts "\e[32m[#{name}]\e[0m #{message}"
-    else
-      puts "[#{name}] #{message}"
     end
   end
 end
