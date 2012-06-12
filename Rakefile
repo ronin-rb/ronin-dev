@@ -153,7 +153,7 @@ namespace :bundle do
 
   desc 'Upgrades a bundled dependency'
   task :update, :repo, :gem do |t,args|
-    Projects[args.repo].run('bundle', 'update', args.gem)
+    Projects[args.repo].run('bundle', 'update', *args.gem)
   end
 end
 
