@@ -23,7 +23,7 @@ module Projects
       return new(name)
     end
 
-    def chdir(&block); Dir.chdir(@name,&block); end
+    def chdir(&block); Dir.chdir(self.name,&block); end
 
     def run(command,*arguments)
       status "#{command} #{arguments.join(' ')}"
@@ -40,7 +40,7 @@ module Projects
       end
     end
 
-    def status(message); self.class.status(@name,message); end
+    def status(message); self.class.status(self.name,message); end
 
   end
 
