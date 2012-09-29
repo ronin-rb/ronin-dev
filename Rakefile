@@ -10,15 +10,9 @@ module Projects
     ronin-scanners
   ]
 
-  class Project
+  class Project < Struct.new(:name)
 
     include FileUtils
-
-    attr_reader :name
-
-    def initialize(name)
-      @name = name
-    end
 
     def self.clone(name)
       uri = "http://github.com/ronin-ruby/#{name}.git"
