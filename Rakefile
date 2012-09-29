@@ -164,3 +164,15 @@ end
 
 task :install, [:repo] => ['git:clone', 'bundle:install']
 task :update,  [:repo] => ['git:pull',  'bundle:install']
+
+namespace :gem do
+  desc 'Builds a gem for each project'
+  task :build, :repo do |t,args|
+    Projects[args.repo].run('rake','build')
+  end
+
+  desc 'Installs each project'
+  task :install, :repo do |t,args|
+    Projects[args.repo].run('rake','install')
+  end
+end
