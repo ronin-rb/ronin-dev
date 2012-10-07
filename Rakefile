@@ -8,6 +8,7 @@ module Projects
     ronin-web
     ronin-exploits
     ronin-scanners
+    ronin-bruteforcers
   ]
 
   class Project < Struct.new(:name)
