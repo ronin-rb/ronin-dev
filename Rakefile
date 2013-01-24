@@ -6,6 +6,8 @@ module Projects
     ronin
     ronin-gen
     ronin-web
+    ronin-asm
+    ronin-sql
     ronin-exploits
     ronin-scanners
     ronin-bruteforcers
