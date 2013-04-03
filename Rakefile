@@ -103,6 +103,11 @@ namespace :git do
     Projects[args.repo].run('git', 'pull', 'origin', 'master')
   end
 
+  desc 'Display the current branch of the repositories'
+  task :branch, :repo do |t,args|
+    Projects[args.repo].run('git', 'branch')
+  end
+
   desc 'Checks the status of the repositories'
   task :status, :repo do |t,args|
     Projects[args.repo].run('git', 'status')
