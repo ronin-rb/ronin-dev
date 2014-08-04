@@ -1,6 +1,8 @@
 require 'fileutils'
 
 module Projects
+  URI = 'http://github.com/ronin-ruby'
+
   NAMES = %w[
     ronin-support
     ronin
@@ -18,7 +20,7 @@ module Projects
     include FileUtils
 
     def self.clone(name)
-      uri = "http://github.com/ronin-ruby/#{name}.git"
+      uri = "#{URI}/#{name}.git"
 
       status name, "git clone #{uri} ..."
       system('git','clone',uri)
