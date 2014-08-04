@@ -1,7 +1,7 @@
 require 'fileutils'
 
 module Projects
-  URI = 'http://github.com/ronin-ruby'
+  URI = 'https://github.com/ronin-ruby'
 
   NAMES = %w[
     ronin-support
